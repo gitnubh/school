@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Form</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            background: whitesmoke;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            padding-top: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border-radius: 5px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        h2 {
+            color: black;
+        }
+    </style>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+    <h2>APPLICATION FORM</h2>
+    <div class="container-fluid text-center">
+        <form action="" method="post">
+            {% csrf_token %}
+            <label for="name">Name: <input type="text" name="name" id="name" required placeholder="Enter your name here"></label>
+            <label for="age">Age: <input type="number" id="age" name="age" min="5" max="30" required placeholder="Enter your age here"></label>
+            <label for="dob">Date of Birth: <input type="date" id="dob" name="dob" required></label>
+            <label for="gender">Gender: <select id="gender" name="gender" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select></label>
+            <label for="email">Email ID: <input type="email" id="email" name="email" required></label>
+            <label for="address">Address: <textarea id="address" name="address" rows="4" required></textarea></label>
+            <label for="department">Department: <select id="department" onchange="updateCourses()" required>
+                <option value=""> ----- </option>
+                <option value="commerce">Commerce</option>
+                <option value="computer_science">Computer Science</option>
+                <option value="biology">Biology</option>
+                <option value="physics">Physics</option>
+                <option value="chemistry">Chemistry</option>
+            </select></label>
+            
+    
+            <label for="course">Course: <select id="course" disabled required>
+                <!-- Options will be dynamically populated based on the selection in the primary dropdown -->
+            </select></label>
+            
+            <label for="purpose">Purpose: <select id="purpose" required>
+                    <option value=""> ----- </option>
+                    <option value="commerce">Enquiry</option>
+                    <option value="computer_science">Admission</option>
+                    <option value="biology">Referral</option>
+                    <option value="physics">Details</option>
+                </select>
+            </label>
+    
+            <input type="submit" class="btn btn-success">
+        </form>
+    </div>
+    
+
+    <script>
+        // Data mapping for dependent options
+        const dependentOptions = {
+            commerce: ["Cost and Management Accounting (CMA)", "Company Secretary (CS)", "Master of Business Administration (MBA)"],
+            computer_science: ["B. Tech in Information Technology", "BCA (Bachelor of Computer Application)", "B.Sc. in Computer Science"],
+            biology: ["Bachelor in Biotechnology", "Bachelor of Pharmacy", "Bachelors in Neuroscience"],
+            physics: ["Astronomy", "Meteorolgy", "Aviation Sciences"],
+            chemistry: ["Chemical Engineering", "Biochemistry", "Bsc Pharmacy"],
+        };
+    
+        function updateCourses() {
+            // Get the selected value from the primary dropdown
+            const department_chosen = document.getElementById("department").value;
+    
+            // Get the secondary dropdown element
+            const course = document.getElementById("course");
+    
+            // Clear existing options
+            course.innerHTML = "";
+    
+            if(department_chosen){
+                course.disabled= false;
+                // Populate options based on the selected category
+                dependentOptions[department_chosen].forEach(option => {
+                    const optionElement = document.createElement("option");
+                    optionElement.value = option;
+                    optionElement.textContent = option;
+                    course.appendChild(optionElement);
+                });
+            } else {
+                course.disabled = true;
+            }
+        }
+    
+        // Initial population of the dependent dropdown
+        updateCourses();
+    </script>
+    
+
+</body>
+</html>
